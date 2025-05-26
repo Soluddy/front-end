@@ -1,0 +1,13 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Init
+    init: |
+      rustup default stable
+      solana --version
+      anchor --version
+    command: |
+      solana config set --url localnet
+      anchor build
+      echo "Ready to dev!"
