@@ -1,0 +1,65 @@
+FROM node:20.19.5-bookworm-slim AS base
+
+FROM base AS deps
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    make \
+    g++ \
+    gcc \
+    libusb-1.0-0-dev \
+    libudev-dev \
+    pkg-config \
+  && rm -rf /var/lib/apt/lists/*
+COPY package*.json .npmrc* ./
+RUN npm ci --legacy-peer-deps
+
+FROM base AS builder
+WORKDIR /app
+
+ARG NEXT_PUBLIC_RPC_URL
+ARG NEXT_PUBLIC_APP_BASE_URL
+ARG NEXT_PUBLIC_CONFIG_PDA
+ARG NEXT_PUBLIC_FEATURED_SLUGS
+ARG NEXT_PUBLIC_REPORT_EMAIL
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
+
+ENV NEXT_PUBLIC_RPC_URL=${NEXT_PUBLIC_RPC_URL}
+ENV NEXT_PUBLIC_APP_BASE_URL=${NEXT_PUBLIC_APP_BASE_URL}
+ENV NEXT_PUBLIC_CONFIG_PDA=${NEXT_PUBLIC_CONFIG_PDA}
+ENV NEXT_PUBLIC_FEATURED_SLUGS=${NEXT_PUBLIC_FEATURED_SLUGS}
+ENV NEXT_PUBLIC_REPORT_EMAIL=${NEXT_PUBLIC_REPORT_EMAIL}
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=${NEXT_PUBLIC_GA_MEASUREMENT_ID}
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM base AS runner
+WORKDIR /app
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+ARG NEXT_PUBLIC_RPC_URL
+ARG NEXT_PUBLIC_APP_BASE_URL
+ARG NEXT_PUBLIC_CONFIG_PDA
+ARG NEXT_PUBLIC_FEATURED_SLUGS
+ARG NEXT_PUBLIC_REPORT_EMAIL
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
+
+ENV NEXT_PUBLIC_RPC_URL=${NEXT_PUBLIC_RPC_URL}
+ENV NEXT_PUBLIC_APP_BASE_URL=${NEXT_PUBLIC_APP_BASE_URL}
+ENV NEXT_PUBLIC_CONFIG_PDA=${NEXT_PUBLIC_CONFIG_PDA}
+ENV NEXT_PUBLIC_FEATURED_SLUGS=${NEXT_PUBLIC_FEATURED_SLUGS}
+ENV NEXT_PUBLIC_REPORT_EMAIL=${NEXT_PUBLIC_REPORT_EMAIL}
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=${NEXT_PUBLIC_GA_MEASUREMENT_ID}
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+USER nextjs
+EXPOSE 8080
+ENV PORT=8080
+
+CMD ["node", "server.js"]

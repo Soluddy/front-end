@@ -1,0 +1,28 @@
+substitutions:
+  _IMAGE: europe-west1-docker.pkg.dev/soluddy/front-end/front-end
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-f'
+      - front-end/Dockerfile
+      - '--build-arg'
+      - 'NEXT_PUBLIC_RPC_URL=${_NEXT_PUBLIC_RPC_URL}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_APP_BASE_URL=${_NEXT_PUBLIC_APP_BASE_URL}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_CONFIG_PDA=${_NEXT_PUBLIC_CONFIG_PDA}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_FEATURED_SLUGS=${_NEXT_PUBLIC_FEATURED_SLUGS}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_REPORT_EMAIL=${_NEXT_PUBLIC_REPORT_EMAIL}'
+      - '--build-arg'
+      - 'NEXT_PUBLIC_GA_MEASUREMENT_ID=${_NEXT_PUBLIC_GA_MEASUREMENT_ID}'
+      - '--build-arg'
+      - '-t'
+      - '$_IMAGE'
+      - front-end
+
+images:
+  - '$_IMAGE'

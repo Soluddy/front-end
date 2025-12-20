@@ -1,0 +1,60 @@
+{
+  "name": "soluddy-web",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Doğu Abaris",
+    "email": "abaris@null.net",
+    "url": "https://doguabaris.bio"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:md": "remark . --quiet --frail",
+    "format:md": "remark . --output --quiet",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@next/third-parties": "16.0.10",
+    "@solana/wallet-adapter-base": "^0.9.26",
+    "@solana/wallet-adapter-react": "^0.15.38",
+    "@solana/wallet-adapter-react-ui": "^0.9.38",
+    "@solana/wallet-adapter-wallets": "^0.19.36",
+    "@solana/web3.js": "^1.98.2",
+    "@squircle/core": "^1.0.6",
+    "@squircle/paint-polyfill": "^1.0.6",
+    "@squircle/tailwindcss": "^1.0.6",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.546.0",
+    "next": "16.0.10",
+    "qrcode.react": "^4.2.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remark-cli": "^12.0.1",
+    "remark-lint-list-item-indent": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-preset-lint-consistent": "^6.0.1",
+    "remark-preset-lint-recommended": "^7.0.1",
+    "remark-stringify": "^11.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.10",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^16.0.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "jsdom": "^24.1.0",
+    "pino-pretty": "^13.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "4.0.15"
+  }
+}

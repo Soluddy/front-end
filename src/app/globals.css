@@ -1,0 +1,122 @@
+@import "@squircle/tailwindcss";
+@import "tailwindcss";
+:root {
+    --background: #fffffc;
+    --foreground: #fffffc;
+    --font-lufga: 'Lufga', sans-serif;
+    --font-sans: var(--font-lufga), Arial, Helvetica, sans-serif;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: 'Lufga', Arial, Helvetica, sans-serif;
+    --font-mono: 'Courier New', Courier, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans, Arial, Helvetica, sans-serif), serif;
+}
+
+@layer utilities {
+    .animate-fade-up {
+        animation: fade-up 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.8s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+
+    .animate-pop {
+        animation: pop-in 0.85s cubic-bezier(0.33, 1, 0.68, 1) both;
+    }
+
+    .animate-soft-pulse {
+        animation: soft-pulse 10s ease-in-out infinite;
+    }
+
+    .hover-lift {
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform, box-shadow;
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 38px -26px rgba(31, 30, 26, 0.32);
+    }
+
+    .animation-delay-050 { animation-delay: 0.05s; }
+    .animation-delay-100 { animation-delay: 0.1s; }
+    .animation-delay-150 { animation-delay: 0.15s; }
+    .animation-delay-200 { animation-delay: 0.2s; }
+    .animation-delay-250 { animation-delay: 0.25s; }
+    .animation-delay-300 { animation-delay: 0.3s; }
+}
+
+@keyframes fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.995);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.985);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.008);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes soft-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.01);
+        opacity: 0.94;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-fade-in,
+    .animate-pop,
+    .animate-soft-pulse,
+    .hover-lift {
+        animation-duration: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0s !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+}
